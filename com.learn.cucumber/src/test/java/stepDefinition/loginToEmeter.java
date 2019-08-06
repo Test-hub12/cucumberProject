@@ -67,7 +67,7 @@ public class loginToEmeter {
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.findElement(By.xpath("//span[contains(text(),'Logout')]")).click();
 		System.out.println("success");
-		driver.close();
+		driver.close();// to close the browser
 		
 	}
 	
