@@ -1,5 +1,6 @@
 package stepDefinition;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -20,8 +21,7 @@ public class loginToEmeter {
 
 	WebDriver driver;
 	
-	@Given("^I am on emtersite$")
-	public void open_emeter() {
+	public void login() {
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Z00406KF\\Downloads\\chrome driver for 76version\\chromedriver.exe");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		//To Turns off multiple download warning
@@ -36,6 +36,7 @@ public class loginToEmeter {
 		prefs.put("password_manager_enabled", false);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("chrome.switches","--disable-extensions");
+		options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
 		options.setExperimentalOption("useAutomationExtension", false);
 		options.addArguments("disable-infobars");
 		options.setExperimentalOption("prefs", prefs);
@@ -43,6 +44,11 @@ public class loginToEmeter {
 		options.addArguments("--start-maximized");
 		  
 		driver=new ChromeDriver(options);
+	}
+	
+	@Given("^I am on emtersite$")
+	public void open_emeter() {
+		login();
 		//driver.manage().window().maximize();
 		driver.get("https://ind-lnxapp312.emeter.com:8443/em-ui");
 	}
@@ -51,6 +57,14 @@ public class loginToEmeter {
 	public void enter_user_name_password(String uname,String pwd) {
 		driver.findElement(By.id("username")).sendKeys(uname);
 		driver.findElement(By.id("password")).sendKeys(pwd);
+		driver.findElement(By.className("btn-submit")).submit();
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+	}
+	
+	@When("^Login with valid username and password")
+	public void enter_user_name_password1() {
+		driver.findElement(By.id("username")).sendKeys("uiuser1");
+		driver.findElement(By.id("password")).sendKeys("uiuser1");
 		driver.findElement(By.className("btn-submit")).submit();
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 	}
