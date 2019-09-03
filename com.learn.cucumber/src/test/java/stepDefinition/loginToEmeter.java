@@ -85,6 +85,8 @@ public class loginToEmeter {
 	public void logout() {
 		WebElement logout=driver.findElement(By.xpath("//span[@id='userdisplay-btnInnerEl']"));
 		mouseHover(logout);
+		logout.getLocation().getX();
+		
 		
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.findElement(By.xpath("//span[contains(text(),'Logout')]")).click();
