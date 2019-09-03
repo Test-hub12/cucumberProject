@@ -1,16 +1,23 @@
 package stepDefinition;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -20,7 +27,7 @@ import io.cucumber.java.en.When;
 public class loginToEmeter {
 
 	WebDriver driver;
-	
+	@BeforeTest
 	public void login() {
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Z00406KF\\Downloads\\chrome driver for 76version\\chromedriver.exe");
 		Map<String, Object> prefs = new HashMap<String, Object>();
@@ -78,10 +85,30 @@ public class loginToEmeter {
 	public void logout() {
 		WebElement logout=driver.findElement(By.xpath("//span[@id='userdisplay-btnInnerEl']"));
 		mouseHover(logout);
+		
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.findElement(By.xpath("//span[contains(text(),'Logout')]")).click();
 		System.out.println("success");
 		driver.close();// to close the browser
+		
+	}
+	
+	@Test
+	public void multipleWindow() throws AWTException, IOException {
+		driver.get("http://www.w3schools.com/tags/tryit.asp?filename=tryhtml_link_target");
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.findElement(By.cssSelector("div.login-method-title")).click();
+	driver.switchTo().alert();
+	Actions action=new Actions(driver);
+		action.sendKeys(Keys.RETURN).build().perform();
+		Runtime.getRuntime().exec("C:\\Users\\Z00406KF\\Desktop\\PKI_Accept.exe");
+		/*Robot r = new Robot();
+		r.keyPress(KeyEvent.VK_ENTER);
+		r.keyRelease(KeyEvent.VK_ENTER);*/
+		
+		driver.findElement(By.linkText("Visit W3Schools.com!")).click();
+		String currWindow=driver.getWindowHandle();
+		System.out.println(currWindow);
 		
 	}
 	
